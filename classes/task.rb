@@ -10,11 +10,17 @@ class Task
 
     def self.all
         db = SQLite3::Database.open "db/database.db"
-        stm = db.prepare "SELECT title, category FROM Tasks"
-        tasks = stm.execute    
-        tasks.each do |row| 
-            puts row
+        db.results_as_hash = true 
+        query = db.execute "SELECT * FROM Tasks"
+        db.close 
+        
+        query.each do |row| 
+            row.each do |key, value| 
+                puts "#{key}: #{value}"
+            end 
         end 
+
+        
     end 
 
 
@@ -22,8 +28,7 @@ class Task
         db = SQLite3::Database.open "db/database.db"
         db.results_as_hash = true
         tasks = db.execute "SELECT title, category FROM Tasks where category='#{category}'"
-     
-        #puts tasks
+    
 
         tasks.each do |row| 
             row.each do |key, value| 
@@ -36,13 +41,20 @@ class Task
         
     end 
 
-    #def self.find_by_id(id)
-    #end 
+    def self.find_by_id(id)
+        db = SQLite3::Database.open "db/database.db"
+        db.results_as_hash = true 
+        task = db.execute "SELECT title, category FROM Tasks where id='#{id}'"
+        
+        task.each do |k,v| 
+            puts "Title: #{k['title']} Category: #{k['category']}"  
+        end 
+    end 
 
 
     def save_to_db 
         db = SQLite3::Database.open "db/database.db"
-        db.execute "INSERT INTO Tasks VALUES ('#{@title}','#{@category}')"
+        db.execute "INSERT INTO Tasks(title, category) VALUES ('#{@title}', '#{@category}')"
         db.close 
         self 
     end 
