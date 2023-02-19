@@ -66,4 +66,10 @@ class Task
         db.execute "DELETE FROM Tasks where id='#{id}'" 
         db.close 
     end 
+
+    def self.delete_by_category(category)
+        db = SQLite3::Database.open "db/database.db"
+        db.execute "DELETE FROM Tasks where category='#{category}'"
+        db.close 
+    end 
 end     
