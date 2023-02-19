@@ -4,5 +4,5 @@ system('bundle check') || system('bundle install')
 require './database_generate.rb' 
 require './classes/task.rb' 
 
-Task.update(6, 'Entregar relatório', 'trabalho') 
+Task.delete_by_id(3)
 Task.all 

@@ -49,15 +49,21 @@ class Task
         end 
     end 
 
+    def self.update(id, title, category) 
+        db = SQLite3::Database.open "db/database.db"
+        db.execute "UPDATE Tasks SET title='#{title}', category='#{category}' where id='#{id}'" 
+        db.close    
+    end  
+
     def save_to_db 
         db = SQLite3::Database.open "db/database.db"
         db.execute "INSERT INTO Tasks(title, category) VALUES ('#{@title}', '#{@category}')"
         db.close 
     end 
-
-    def self.update(id, title, category) 
-            db = SQLite3::Database.open "db/database.db"
-            db.execute "UPDATE Tasks SET title='#{title}', category='#{category}' where id='#{id}'" 
-            db.close 
-    end     
+    
+    def self.delete_by_id(id) 
+        db = SQLite3::Database.open "db/database.db" 
+        db.execute "DELETE FROM Tasks where id='#{id}'" 
+        db.close 
+    end 
 end     
