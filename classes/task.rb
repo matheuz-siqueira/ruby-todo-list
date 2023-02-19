@@ -19,8 +19,6 @@ class Task
                 puts "#{key}: #{value}"
             end 
         end 
-
-        
     end 
 
 
@@ -51,12 +49,15 @@ class Task
         end 
     end 
 
-
     def save_to_db 
         db = SQLite3::Database.open "db/database.db"
         db.execute "INSERT INTO Tasks(title, category) VALUES ('#{@title}', '#{@category}')"
         db.close 
-        self 
     end 
 
+    def self.update(id, title, category) 
+            db = SQLite3::Database.open "db/database.db"
+            db.execute "UPDATE Tasks SET title='#{title}', category='#{category}' where id='#{id}'" 
+            db.close 
+    end     
 end     
